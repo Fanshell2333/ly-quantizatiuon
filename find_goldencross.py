@@ -31,9 +31,13 @@ class FindGoldenCross(bt.Strategy):
             self.inds[d]['ma3'] = bt.indicators.SimpleMovingAverage(d, period=self.params.maperiod3)
             self.inds[d]['ma4'] = bt.indicators.SimpleMovingAverage(d, period=self.params.maperiod4)
             self.inds[d]['ma5'] = bt.indicators.SimpleMovingAverage(d, period=self.params.maperiod5)
-            self.inds[d]['D1'] = bt.ind.CrossOver(self.inds[d]['ma5'],self.inds[d]['ma4']) #交叉信号
-            self.inds[d]['A1'] = bt.ind.CrossOver(self.inds[d]['ma1'],self.inds[d]['ma2']) #交叉信号
-            self.inds[d]['C1'] = bt.ind.CrossOver(self.inds[d]['ma2'],self.inds[d]['ma3'])
+            self.inds[d]['D1'] = bt.ind.CrossOver(self.inds[d]['ma5'], self.inds[d]['ma4'])
+            # 交叉信号
+            self.inds[d]['A1'] = bt.ind.CrossOver(self.inds[d]['ma1'], self.inds[d]['ma2'])
+            # 交叉信号
+            self.inds[d]['C1'] = bt.ind.CrossOver(self.inds[d]['ma2'], self.inds[d]['ma3'])
+
+        print(self.datas[0])
 
     def notify_trade(self, trade):
         if not trade.isclosed:
@@ -79,13 +83,12 @@ class FindGoldenCross(bt.Strategy):
                     self.log('%s, Deadcross appeard, %.2f,%s' % (dt, d.close[0] ,d._name))
 
 
-#印花税
+# 印花税
 class stampDutyCommissionScheme(bt.CommInfoBase):
     params = (
         ('stamp_duty', 0.005),  # 印花税率
         ('percabs', True),
     )
-
     def _gotcommission(self, size, price, pseudoexec):
         if size > 0:  # 买入，不考虑印花税
             return size * price * self.p.commission

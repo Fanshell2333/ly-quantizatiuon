@@ -34,7 +34,6 @@ class BollStrategy(bt.Strategy):
 
 
     def next(self):
-
         if self.order:
             return
 
